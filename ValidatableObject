@@ -8,26 +8,43 @@ namespace XXXX.XXXX
     {
         public List<IValidationRule<T>> Validations { get; } = new List<IValidationRule<T>>();
 
-        public List<string> Errors { get; set; } = new List<string>();
-
+        private List<string> _errors = new List<string>();
+        public List<string> Errors
+        {
+            get => _errors;
+            set
+            {
+                SetProperty(ref _errors, value);
+            }
+        }
         public bool CleanOnChange { get; set; } = true;
 
         T _value;
+
+        public ValidatableObject()
+        {
+        }
+
         public T Value
         {
             get => _value;
             set
             {
                 SetProperty(ref _value, value);
-                //_value = value;
 
                 if (CleanOnChange)
                     IsValid = true;
             }
         }
 
-        public bool IsValid { get; set; } = true;
-
+        private bool isValid = true;
+        public bool IsValid
+        {
+            get => isValid; set
+            {
+                SetProperty(ref isValid, value);
+            }
+        }
         public virtual bool Validate()
         {
             Errors.Clear();
